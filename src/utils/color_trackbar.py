@@ -51,11 +51,25 @@ class Trackbar:
         self.in_range()
 
 
-def save_values(color_low, color_high):
+def save_values(color_low, color_high,img_path):
     with open("config.json","r") as f:
         config=json.load(f)
-    config["color"]["low"]={"H": color_low[0], "S": color_low[1], "V": color_low[2]}
-    config["color"]["high"]={"H": color_high[0], "S": color_high[1], "V": color_high[2]}
+    img_name=os.path.split(img_path)[-1]
+
+    
+    config[img_name]={
+        "color":
+        {
+            "low":
+            {
+                "H": color_low[0], "S": color_low[1], "V": color_low[2]
+            },
+            "high":
+            {
+                "H": color_high[0], "S": color_high[1], "V": color_high[2]
+            }
+        }
+    }
     with open("config.json", "w") as f:
         json.dump(config, f, indent=4)
 
@@ -83,7 +97,7 @@ def color_trackbar(img_path):
         k = cv.waitKey(0)
 
         if k == ord('s'):
-            save_values(t.color_low, t.color_high)
+            save_values(t.color_low, t.color_high,img_path)
         elif k==27:
             cv.destroyAllWindows()
             break
