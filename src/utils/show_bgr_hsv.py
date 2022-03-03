@@ -60,7 +60,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Show RGB or HSV value of Where You Click')
     parser.add_argument(
-        '--input1', help='Path to the first input image.', default="Rubiks.jpg")
+        '--image', help='Path to the input image.', default="Rubiks.jpg")
     args = parser.parse_args()
 
-    show_bgr_hsv(os.path.join("data/test images/", args.input1))
+    show_bgr_hsv(os.path.join("data/test images/", args.image))
