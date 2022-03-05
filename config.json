@@ -14,9 +14,9 @@
         },
         "threshold": {
             "method": 0,
-            "value": 118,
-            "block size": 11,
-            "C": 2
+            "value": 130,
+            "block size": 0,
+            "C": 0
         }
     },
     "lorem.jpg": {
@@ -53,5 +53,25 @@
             }
         },
         "threshold": {}
+    },
+    "7_habits.jpg": {
+        "color": {
+            "low": {
+                "H": 19,
+                "S": 64,
+                "V": 137
+            },
+            "high": {
+                "H": 255,
+                "S": 255,
+                "V": 255
+            }
+        },
+        "threshold": {
+            "method": 0,
+            "value": 94,
+            "block size": 55,
+            "C": 55
+        }
     }
 }
