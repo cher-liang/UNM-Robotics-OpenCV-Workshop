@@ -11,18 +11,42 @@ title_window = "Threshold Values"
 
 
 class Trackbar:
-    def __init__(self, img) -> None:
-        self.img = img
+    def __init__(self, img_path) -> None:
+        self.img_name = os.path.split(img_path)[-1]
+
+        self.img = cv.imread(img_path)
+        cv.imshow('Figure', self.img)
 
         self.H_l, self.S_l, self.V_l = 0, 0, 0
         self.H_h, self.S_h, self.V_h = 255, 255, 255
 
+        self.__color_low = (0, 0, 0)
+        self.__color_high = (255, 255, 255)
+
+    def GUI(self):
+        # Create a window for the trackbars
+        cv.namedWindow(title_window, WINDOW_AUTOSIZE)
+        cv.resizeWindow(title_window, 600, 400)
+
+        cv.createTrackbar('H_l', title_window, self.H_l,
+                          slider_max, self.H_l_change)
+        cv.createTrackbar('S_l', title_window, self.S_l,
+                          slider_max, self.S_l_change)
+        cv.createTrackbar('V_l', title_window, self.V_l,
+                          slider_max, self.V_l_change)
+        cv.createTrackbar('H_h', title_window, self.H_h,
+                          slider_max, self.H_h_change)
+        cv.createTrackbar('S_h', title_window, self.S_h,
+                          slider_max, self.S_h_change)
+        cv.createTrackbar('V_h', title_window, self.V_h,
+                          slider_max, self.V_h_change)
+
     def in_range(self):
-        self.color_low = (self.H_l, self.S_l, self.V_l)
-        self.color_high = (self.H_h, self.S_h, self.V_h)
+        self.__color_low = (self.H_l, self.S_l, self.V_l)
+        self.__color_high = (self.H_h, self.S_h, self.V_h)
 
         # Apply the value obtained from trackbar and apply to the thresholding
-        mask = cv.inRange(self.img, self.color_low, self.color_high)
+        mask = cv.inRange(self.img, self.__color_low, self.__color_high)
 
         cv.imshow('Mask', mask)
 
@@ -50,55 +74,54 @@ class Trackbar:
         self.V_h = val
         self.in_range()
 
+    def load_values(self) -> bool:
+        with open("config.json", "r") as f:
+            config = json.load(f)
 
-def save_values(color_low, color_high,img_path):
-    with open("config.json","r") as f:
-        config=json.load(f)
-    img_name=os.path.split(img_path)[-1]
+        c = config[self.img_name]["color"]
+        if self.img_name in config:
+            self.H_l, self.S_l, self.V_l = c["low"]["H"], c["low"]["S"], c["low"]["V"]
+            self.H_h, self.S_h, self.V_h = c["high"]["H"], c["high"]["S"], c["high"]["V"]
 
-    
-    config[img_name]={
-        "color":
-        {
-            "low":
+            return True
+        else:
+            return False
+
+    def save_values(self):
+
+        with open("config.json", "r") as f:
+            config = json.load(f)
+
+        config[self.img_name] = {
+            "color":
             {
-                "H": color_low[0], "S": color_low[1], "V": color_low[2]
-            },
-            "high":
-            {
-                "H": color_high[0], "S": color_high[1], "V": color_high[2]
+                "low":
+                {
+                    "H": self.__color_low[0], "S": self.__color_low[1], "V": self.__color_low[2]
+                },
+                "high":
+                {
+                    "H": self.__color_high[0], "S": self.__color_high[1], "V": self.__color_high[2]
+                }
             }
         }
-    }
-    with open("config.json", "w") as f:
-        json.dump(config, f, indent=4)
+        with open("config.json", "w") as f:
+            json.dump(config, f, indent=4)
 
 
 def color_trackbar(img_path):
-    img = cv.imread(img_path)
-    cv.imshow('Figure', img)
-    t = Trackbar(img)
 
-    # Create a window for the trackbars
-    cv.namedWindow(title_window, WINDOW_AUTOSIZE)
-    cv.resizeWindow(title_window, 600, 400)
+    t = Trackbar(img_path)
 
-    cv.createTrackbar('H_l', title_window, 0, slider_max, t.H_l_change)
-    cv.createTrackbar('S_l', title_window, 0, slider_max, t.S_l_change)
-    cv.createTrackbar('V_l', title_window, 0, slider_max, t.V_l_change)
-    cv.createTrackbar('H_h', title_window, slider_max,
-                      slider_max, t.H_h_change)
-    cv.createTrackbar('S_h', title_window, slider_max,
-                      slider_max, t.S_h_change)
-    cv.createTrackbar('V_h', title_window, slider_max,
-                      slider_max, t.V_h_change)
+    t.load_values()
+    t.GUI()
 
     while True:
         k = cv.waitKey(0)
 
         if k == ord('s'):
-            save_values(t.color_low, t.color_high,img_path)
-        elif k==27:
+            t.save_values()
+        elif k == 27:
             cv.destroyAllWindows()
             break
 
