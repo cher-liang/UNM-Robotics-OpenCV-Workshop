@@ -31,8 +31,8 @@ class Thresh_Trackbar:
 
         cv.createTrackbar("Threshold method",title_window,self.__thresh_method,2,self.__method_change)
         cv.createTrackbar("Threshold value",title_window,self.__thresh_val,255,self.__val_change)
-        cv.createTrackbar("Block size (Odd number)",title_window,self.__block_size,30,self.__block_change)
-        cv.createTrackbar("C",title_window,self.__C_val,10,self.__C_change)
+        cv.createTrackbar("Block size (Odd number)",title_window,self.__block_size,55,self.__block_change)
+        cv.createTrackbar("C",title_window,self.__C_val,55,self.__C_change)
 
     def thresholding(self):
         if self.__thresh_method==0:
@@ -67,7 +67,7 @@ class Thresh_Trackbar:
         with open("config.json", "r") as f:
             config = json.load(f)
 
-        if self.img_name in config and "threshold" in config[self.img_name]:
+        if self.img_name in config and "method" in config[self.img_name]["threshold"]:
             c = config[self.img_name]["threshold"]
             self.__thresh_method, self.__thresh_val, self.__block_size,self.__C_val = c["method"], c["value"], c["block size"],c["C"]
 
