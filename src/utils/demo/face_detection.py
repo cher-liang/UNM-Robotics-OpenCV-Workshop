@@ -2,9 +2,10 @@ import cv2 as cv
 
 face_cascade = cv.CascadeClassifier('data/models/haarcascade_frontalface_default.xml')
 
-cap= cv.VideoCapture(0,cv.CAP_DSHOW)
 
 def face_detection():
+    cap= cv.VideoCapture(0,cv.CAP_DSHOW)
+
     while True:
         ret,frame=cap.read()
 
@@ -29,4 +30,5 @@ def face_detection():
     cv.destroyAllWindows()
 
 if __name__ == '__main__':
+
     face_detection()
