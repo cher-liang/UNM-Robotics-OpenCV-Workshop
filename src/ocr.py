@@ -11,6 +11,7 @@ from utils.color_segmentation import color_seg
 from utils.find_contours import find_cnt
 from utils.perspective_transform import persp_trans
 from utils.thresholding import thresh
+from utils.contour_remove import middle_bar_remove,get_text_bars
 
 def ocr(img_path):
     img_name = os.path.split(img_path)[-1]
@@ -24,6 +25,20 @@ def ocr(img_path):
     warp=persp_trans(img,cnt)
 
     threshold=thresh(warp,img_name)
+
+    # mask2=color_seg(warp,img_name)
+
+    middle_bar_remove(threshold)
+
+    result = get_text_bars(threshold)
+
+
+    custom_config = r'-l eng --psm 6' 
+    text = pytesseract.image_to_string(result,config=custom_config)
+    text2 = pytesseract.image_to_string(img,config=custom_config)
+    
+    print(f"With Pre-Processing:\n{text}")
+    print(f"Original image:\n{text2}")
 
     
     
