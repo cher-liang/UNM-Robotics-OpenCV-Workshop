@@ -29,7 +29,7 @@ def thresh(warp,img_name,show_bool=True):
             cv.THRESH_BINARY_INV,block_size,C_val)
     elif thresh_method == 2:
         threshold= cv.adaptiveThreshold(gray,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,\
-            cv.THRESH_BINARY_INV,block_size.C_val)
+            cv.THRESH_BINARY_INV,block_size,C_val)
 
     if show_bool:
         cv.imshow("warp gray", gray)
