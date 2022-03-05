@@ -2,7 +2,7 @@
     "book.jpg": {
         "color": {
             "low": {
-                "H": 16,
+                "H": 17,
                 "S": 118,
                 "V": 70
             },
@@ -11,20 +11,47 @@
                 "S": 201,
                 "V": 255
             }
+        },
+        "threshold": {
+            "method": 0,
+            "value": 118,
+            "block size": 11,
+            "C": 2
         }
     },
     "lorem.jpg": {
         "color": {
             "low": {
-                "H": 27,
-                "S": 59,
-                "V": 35
+                "H": 96,
+                "S": 97,
+                "V": 69
             },
             "high": {
-                "H": 170,
-                "S": 135,
-                "V": 168
+                "H": 227,
+                "S": 238,
+                "V": 229
             }
+        },
+        "threshold": {
+            "method": 1,
+            "value": 60,
+            "block size": 11,
+            "C": 6
         }
+    },
+    "facemask_edited.jpg": {
+        "color": {
+            "low": {
+                "H": 50,
+                "S": 6,
+                "V": 64
+            },
+            "high": {
+                "H": 255,
+                "S": 255,
+                "V": 255
+            }
+        },
+        "threshold": {}
     }
 }
