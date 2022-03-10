@@ -56,7 +56,8 @@ class Thresh_Trackbar:
     
     def __block_change(self,val:int):
         self.__block_size=val
-        self.thresholding()
+        if (self.__block_size%2==1):
+            self.thresholding()
     
     def __C_change(self,val:int):
         self.__C_val=val
